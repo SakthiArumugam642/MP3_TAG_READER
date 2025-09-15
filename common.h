@@ -1,7 +1,12 @@
+/*
+Name : Sakthivel A
+Date : 15-09-2025
+Desc : MP3 Tag Reader and Editor
+*/
 #ifndef COMMON_H
 #define COMMON_H
 
-typedef enum { e_view, e_edit, e_unsupported } oper;
+typedef enum { e_view, e_edit, e_help,e_unsupported } oper;
 typedef enum { e_success, e_failure } sts;
 
 extern char *TAG[];

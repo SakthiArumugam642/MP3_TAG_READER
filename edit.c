@@ -1,3 +1,8 @@
+/*
+Name : Sakthivel A
+Date : 15-09-2025
+Desc : MP3 Tag Reader and Editor
+*/
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -10,6 +15,7 @@ FILE *temp = NULL;          // temp file
 int get_tag_size_edit(FILE *fptr) {
     unsigned char size_buf[4];
     if (fread(size_buf, 4, 1, fptr) != 1) return -1;
+    // Big Endian to Little endian conversion
     int size = (size_buf[0] << 24) |
                (size_buf[1] << 16) |
                (size_buf[2] << 8)  |
@@ -28,6 +34,7 @@ void write_tag_size(FILE *fp, int size) {
 }
 
 int get_index(char *helper[], char *tag) {
+    // match and get index for TAG ID based on helper Tag ID
     for (int i = 0; i < 6; i++) {
         if (strcmp(helper[i], tag) == 0) return i;
     }
@@ -48,7 +55,7 @@ sts open_mp3_edit(FILE **fptr, char *mp3) {
 
 sts edit_mp3(char *mp3, char *tag, char *new_content) {
     FILE *fptr = NULL;
-    if (open_mp3_edit(&fptr, mp3) == e_failure) return e_failure;
+    if (open_mp3_edit(&fptr, mp3) == e_failure) return e_failure; // opening files
 
     // Copy header (10 bytes)
     if (fread(buffer, 10, 1, fptr) != 1) {
@@ -58,7 +65,7 @@ sts edit_mp3(char *mp3, char *tag, char *new_content) {
     }
     fwrite(buffer, 10, 1, temp);
 
-    if (read_tag_edit(fptr, tag, new_content) == e_failure) {
+    if (read_tag_edit(fptr, tag, new_content) == e_failure) { // from here onwards tags and its content started
         fclose(fptr);
         fclose(temp);
         return e_failure;
